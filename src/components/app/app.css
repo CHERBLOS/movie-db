@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+* {
+  box-sizing: border-box;
+}
+
+.app {
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+  width: 1010px;
+  margin: 0 auto;
+  padding-bottom: 15px;
+}
+
+.app__spinner {
+  height: 100vh;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50% -50%);
+}
+
+.app_list {
+  text-align: center;
+}
+
+.app__pagination {
+  text-align: center;
+}
