@@ -15,6 +15,7 @@
 .card__textarea-genre .card__textarea-genre-item code {
   margin: 0;
 }
+
 .card {
   max-width: 455px;
   height: 280px;
@@ -98,15 +99,21 @@
   font-size: 12px;
 }
 
-.card__rate-block[data-color='1'] {
+.card__rate-block[data-color='bad'] {
   border: 2px solid #e90000;
 }
-.card__rate-block[data-color='2'] {
+.card__rate-block[data-color='normal'] {
   border: 2px solid #e97e00;
 }
-.card__rate-block[data-color='3'] {
+.card__rate-block[data-color='good'] {
   border: 2px solid #e9d100;
 }
-.card__rate-block[data-color='4'] {
+.card__rate-block[data-color='perfect'] {
   border: 2px solid #66e900;
+}
+
+@media (min-width: 320px) and (max-width: 480px) {
+  .card__image {
+    width: 120px;
+  }
 }

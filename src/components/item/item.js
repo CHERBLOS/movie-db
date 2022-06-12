@@ -57,15 +57,15 @@ class Item extends React.Component {
 
   static getVoteColor(averageRate) {
     if (averageRate < 3) {
-      return '1'
+      return 'bad'
     }
     if (averageRate > 7) {
-      return '4'
+      return 'perfect'
     }
     if (averageRate <= 5 && averageRate >= 3) {
-      return '2'
+      return 'normal'
     }
-    return '3'
+    return 'good'
   }
 
   constructor() {
@@ -93,12 +93,13 @@ class Item extends React.Component {
       <div key={id} className="card__textarea-genre">
         <ServiceConsumer>
           {(value) =>
-            value.map((genre) =>
-              genresArr.includes(genre.id) ? (
-                <Text key={id + genre.name} className="card__textarea-genre-item" code>
-                  {genre.name}
-                </Text>
-              ) : null
+            value.map(
+              (genre) =>
+                genresArr.includes(genre.id) && (
+                  <Text key={id + genre.name} className="card__textarea-genre-item" code>
+                    {genre.name}
+                  </Text>
+                )
             )
           }
         </ServiceConsumer>

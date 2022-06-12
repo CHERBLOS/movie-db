@@ -6,7 +6,7 @@
 .app {
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
-  width: 1010px;
+  max-width: 1010px;
   margin: 0 auto;
   padding-bottom: 15px;
 }
@@ -25,4 +25,12 @@
 
 .app__pagination {
   text-align: center;
+}
+
+@media (min-width: 320px) and (max-width: 980px) {
+  .ant-row,
+  .ant-row:after,
+  .ant-row:before {
+    flex-direction: column !important;
+  }
 }

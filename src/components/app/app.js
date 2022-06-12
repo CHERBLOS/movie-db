@@ -6,13 +6,12 @@ import SearchLine from '../searchLine'
 import MoviesService from '../../services/movies-service'
 import Navigation from '../navigation'
 import { ServiceProvider } from '../../services/service-context'
+import STATUS from '../../constants'
 
 import './app.css'
 import 'antd/dist/antd.min.css'
 
 class App extends React.Component {
-  static MoviesReq = new MoviesService()
-
   static createCardFilm = (data) => ({
     id: data.id,
     title: data.title,
@@ -33,7 +32,7 @@ class App extends React.Component {
       current: 1,
       totalItems: null,
       error: false,
-      tab: 'Search',
+      tab: STATUS.SEARCH,
     }
     this.inputRef = React.createRef()
   }
@@ -49,13 +48,13 @@ class App extends React.Component {
   async getMoviesItems(page = 1) {
     try {
       const { searchString, tab, guestSessionId } = this.state
-      if (searchString && tab === 'Search') {
+      if (searchString && tab === STATUS.SEARCH) {
         this.setState(() => ({ isLoading: true }))
-        const movieList = await App.MoviesReq.getMovies(searchString, page).then((data) => data)
+        const movieList = await MoviesService.getMovies(searchString, page).then((data) => data)
         this.setTotalItems(movieList.total_results)
         this.setMovies(movieList)
-      } else if (tab === 'Rated') {
-        const movieList = await App.MoviesReq.getRatedMovies(guestSessionId).then((data) => data)
+      } else if (tab === STATUS.RATED) {
+        const movieList = await MoviesService.getRatedMovies(guestSessionId).then((data) => data)
         this.setTotalItems(movieList.total_results)
         this.setMovies(movieList)
       }
@@ -102,17 +101,17 @@ class App extends React.Component {
         tab,
         searchString: null,
         films: [],
-        isLoading: tab === 'Rated',
+        isLoading: tab === STATUS.RATED,
       },
       this.getMoviesItems
     )
   }
 
   init = () => {
-    App.MoviesReq.createGuestSession().then((data) => {
+    MoviesService.createGuestSession().then((data) => {
       this.setState({ guestSessionId: data.guest_session_id })
     })
-    App.MoviesReq.getGenres().then((data) => {
+    MoviesService.getGenres().then((data) => {
       this.setState({ genres: data.genres })
     })
     this.inputRef.current.focus()
@@ -120,33 +119,30 @@ class App extends React.Component {
 
   render() {
     const { searchString, films, isLoading, current, totalItems, error, tab, guestSessionId, genres } = this.state
-    const spinner = isLoading ? (
+    const spinner = isLoading && (
       <div className="app__spinner">
         <Spin size="large" />
       </div>
-    ) : null
-    const content =
-      !isLoading && !error && (searchString || tab === 'Rated') ? (
-        <ServiceProvider value={genres}>
-          <ItemList className="app_list" films={films} guestSessionId={guestSessionId} searchString={searchString} />
-        </ServiceProvider>
-      ) : null
-    const errorMessage = error ? (
-      <Alert message="Sorry, we didn't have info for this film" type="error" showIcon />
-    ) : null
-    const pagination =
-      !isLoading && !error && searchString && films.length ? (
-        <Pagination
-          className="app__pagination"
-          current={current}
-          onChange={this.onChange}
-          total={totalItems}
-          defaultPageSize={20}
-          showSizeChanger={false}
-        />
-      ) : null
-    const searchLine =
-      tab === 'Search' ? <SearchLine inputRef={this.inputRef} setSearchString={this.setSearchString} /> : null
+    )
+    const content = !isLoading && !error && (searchString || tab === STATUS.RATED) && (
+      <ServiceProvider value={genres}>
+        <ItemList className="app_list" films={films} guestSessionId={guestSessionId} searchString={searchString} />
+      </ServiceProvider>
+    )
+    const errorMessage = error && <Alert message="Sorry, we didn't have info for this film" type="error" showIcon />
+    const pagination = !isLoading && !error && searchString && films.length && (
+      <Pagination
+        className="app__pagination"
+        current={current}
+        onChange={this.onChange}
+        total={totalItems}
+        defaultPageSize={20}
+        showSizeChanger={false}
+      />
+    )
+    const searchLine = tab === STATUS.SEARCH && (
+      <SearchLine inputRef={this.inputRef} setSearchString={this.setSearchString} />
+    )
     return (
       <div className="app">
         <Navigation setTab={this.setTab} />

@@ -1,10 +1,8 @@
 class RateFilmService {
   apiBaseUrl = 'https://api.themoviedb.org/3/'
 
-  apiKey = '8cdbcb69927731dd18111701af8de0a5'
-
   async rateFilm(rating, filmId, guestSessionID) {
-    const url = `${this.apiBaseUrl}movie/${filmId}/rating?api_key=${this.apiKey}&guest_session_id=${guestSessionID}`
+    const url = `${this.apiBaseUrl}movie/${filmId}/rating?api_key=${process.env.REACT_APP_TOKEN}&guest_session_id=${guestSessionID}`
     const res = await fetch(url, {
       method: 'POST',
       headers: {

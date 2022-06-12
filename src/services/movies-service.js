@@ -1,7 +1,5 @@
-export default class MoviesService {
+class MoviesService {
   apiBaseUrl = 'https://api.themoviedb.org/3/'
-
-  apiKey = '8cdbcb69927731dd18111701af8de0a5'
 
   async getResourse(query) {
     try {
@@ -20,25 +18,27 @@ export default class MoviesService {
 
   async getMovies(request, page) {
     const res = await this.getResourse(
-      `search/movie?api_key=${this.apiKey}&language=en-US&query=${request}&page=${page}`
+      `search/movie?api_key=${process.env.REACT_APP_TOKEN}&language=en-US&query=${request}&page=${page}`
     )
     return res
   }
 
   async createGuestSession() {
-    const res = await this.getResourse(`authentication/guest_session/new?api_key=${this.apiKey}`)
+    const res = await this.getResourse(`authentication/guest_session/new?api_key=${process.env.REACT_APP_TOKEN}`)
     return res
   }
 
   async getGenres() {
-    const res = await this.getResourse(`genre/movie/list?api_key=${this.apiKey}&language=en-US`)
+    const res = await this.getResourse(`genre/movie/list?api_key=${process.env.REACT_APP_TOKEN}&language=en-US`)
     return res
   }
 
   async getRatedMovies(guestId) {
     const res = await this.getResourse(
-      `guest_session/${guestId}/rated/movies?api_key=${this.apiKey}&language=en-US&sort_by=created_at.asc`
+      `guest_session/${guestId}/rated/movies?api_key=${process.env.REACT_APP_TOKEN}&language=en-US&sort_by=created_at.asc`
     )
     return res
   }
 }
+
+export default new MoviesService()

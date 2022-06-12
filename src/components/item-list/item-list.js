@@ -9,6 +9,7 @@ function ItemList(props) {
   const { films, guestSessionId } = props
   const list = films.length ? (
     <List
+      className="list"
       grid={{ gutter: 16, column: 2 }}
       dataSource={films}
       renderItem={(item) => (
